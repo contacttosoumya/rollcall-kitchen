@@ -1,0 +1,110 @@
+<nav class="admin-sidebar">
+  <div class="admin-sidebar__brand">
+    <img src="/images/logo-badge.png" alt="RollCall Kitchen" class="admin-sidebar__logo">
+    <div class="admin-sidebar__brand-text">
+      <span class="admin-sidebar__brand-name">RollCall</span>
+      <span class="admin-sidebar__brand-tag">Admin Panel</span>
+    </div>
+  </div>
+
+  <div class="admin-nav-scroll">
+    <div class="admin-nav-group">
+      <a class="admin-nav-link <%= currentPath === '/admin/' || currentPath === '/admin' ? 'is-active' : '' %>" href="/admin">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="12" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="16" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg></span>
+        Dashboard
+      </a>
+    </div>
+
+    <div class="admin-nav-group">
+      <p class="admin-nav-group__label">Menu</p>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/dishes') ? 'is-active' : '' %>" href="/admin/dishes">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 8h16l-1.3 10.4a2 2 0 0 1-2 1.6H7.3a2 2 0 0 1-2-1.6L4 8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 8V6a4 4 0 0 1 8 0v2" stroke="currentColor" stroke-width="1.8"/></svg></span>
+        Dishes
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/categories') ? 'is-active' : '' %>" href="/admin/categories">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        Categories
+      </a>
+    </div>
+
+    <div class="admin-nav-group">
+      <p class="admin-nav-group__label">Business</p>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/locations') ? 'is-active' : '' %>" href="/admin/locations">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.5" stroke="currentColor" stroke-width="1.8"/></svg></span>
+        Locations
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/catering_packages') ? 'is-active' : '' %>" href="/admin/catering_packages">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="10" width="18" height="9" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 10l2-5h14l2 5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        Catering Packages
+      </a>
+    </div>
+
+    <div class="admin-nav-group">
+      <p class="admin-nav-group__label">Rewards Program</p>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/reward_steps') ? 'is-active' : '' %>" href="/admin/reward_steps">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-12M6 8l-3 4 3 4M18 8l3 4-3 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        How It Works
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/reward_tiers') ? 'is-active' : '' %>" href="/admin/reward_tiers">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="5" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 12.5L7 21l5-2.5L17 21l-1.5-8.5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        Tiers
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/reward_catalog') ? 'is-active' : '' %>" href="/admin/reward_catalog">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="13" rx="1.5" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 8v13" stroke="currentColor" stroke-width="1.8"/><path d="M12 8c-1.5-3-5-4.5-5-2s2.5 2 5 2Zm0 0c1.5-3 5-4.5 5-2s-2.5 2-5 2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        Redemption Catalog
+      </a>
+    </div>
+
+    <div class="admin-nav-group">
+      <p class="admin-nav-group__label">Site Content</p>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/testimonials') ? 'is-active' : '' %>" href="/admin/testimonials">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        Testimonials
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/gallery_items') ? 'is-active' : '' %>" href="/admin/gallery_items">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="8.5" cy="8.5" r="1.8" stroke="currentColor" stroke-width="1.8"/><path d="M21 15l-5-5-9 9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+        Gallery
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/faqs') ? 'is-active' : '' %>" href="/admin/faqs">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg></span>
+        FAQs
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/timeline_events') ? 'is-active' : '' %>" href="/admin/timeline_events">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        About — Timeline
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/value_props') ? 'is-active' : '' %>" href="/admin/value_props">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        About — Values
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/settings') ? 'is-active' : '' %>" href="/admin/settings">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+        Site Settings
+      </a>
+    </div>
+
+    <div class="admin-nav-group">
+      <p class="admin-nav-group__label">Submissions</p>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/submissions/contact') ? 'is-active' : '' %>" href="/admin/submissions/contact">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Contact Messages
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/submissions/catering') ? 'is-active' : '' %>" href="/admin/submissions/catering">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 16h6M9 8h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/></svg></span>
+        Catering Requests
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/submissions/reservations') ? 'is-active' : '' %>" href="/admin/submissions/reservations">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+        Reservations
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/submissions/members') ? 'is-active' : '' %>" href="/admin/submissions/members">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M2.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="17.5" cy="8.5" r="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M15.8 13.6c2.7.4 4.7 2.8 4.7 5.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        Rewards Members
+      </a>
+      <a class="admin-nav-link <%= currentPath.startsWith('/admin/submissions/pos-orders') ? 'is-active' : '' %>" href="/admin/submissions/pos-orders">
+        <span class="admin-nav-link__icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 3h12l1 5H5l1-5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 8v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8M9 13h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Off-Site Orders
+      </a>
+    </div>
+  </div>
+</nav>

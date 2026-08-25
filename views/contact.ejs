@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="page-contact">
+<%- include('partials/header') %>
+
+<% const contactHero = (content.page_heroes && content.page_heroes.contact) || {}; %>
+<% const errors = typeof formErrors !== 'undefined' ? formErrors : []; %>
+<% const values = typeof formValues !== 'undefined' ? formValues : {}; %>
+
+<main>
+  <section class="page-hero page-hero--contact">
+    <div class="wrap">
+      <% if (contactHero.eyebrow) { %><p class="eyebrow eyebrow--light" data-reveal><%= contactHero.eyebrow %></p><% } %>
+      <h1 class="light-heading" data-reveal><%= contactHero.title || "Questions, feedback, or a table to book?" %></h1>
+      <p class="page-hero__sub" data-reveal data-reveal-delay="1"><%= contactHero.subtitle || '' %></p>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="wrap contact-grid">
+      <div class="contact-form-col" data-reveal>
+        <h2>Send a message</h2>
+<p>Have a question, feedback, or a partnership idea? We'd love to hear from you.</p>
+        <% if (typeof submitted !== 'undefined' && submitted) { %>
+          <div class="form-success">
+            <span class="form-success__icon">✅</span>
+            <h3>Message sent!</h3>
+            <p>Thanks for writing in — we typically reply within one business day.</p>
+            <a href="/contact" class="text-link">Send another message →</a>
+          </div>
+        <% } else { %>
+          <form class="catering-form" method="POST" action="/contact">
+            <% if (errors.length) { %>
+              <div class="form-errors" role="alert">
+                <% errors.forEach(function(msg){ %><p><%= msg %></p><% }) %>
+              </div>
+            <% } %>
+            <div class="form-row">
+              <label>Your name
+                <input type="text" name="name" value="<%= values.name || '' %>" required>
+              </label>
+              <label>Email
+                <input type="email" name="email" value="<%= values.email || '' %>" required>
+              </label>
+            </div>
+            <label>Subject
+              <select name="subject">
+                <option>General question</option>
+                <option>Feedback on my order</option>
+                <option>Franchise interest</option>
+                <option>Suggest a new location</option>
+                <option>Something else</option>
+              </select>
+            </label>
+            <label>Message
+              <textarea name="message" rows="5" required><%= values.message || '' %></textarea>
+            </label>
+            <button type="submit" class="btn btn--primary btn--large btn--block">Send Message</button>
+          </form>
+        <% } %>
+      </div>
+
+      <div class="contact-reserve-col" data-reveal data-reveal-delay="1">
+        <h2>Reserve a table</h2>
+        <p>Dining in with a group? Grab a table in advance — we'll confirm by phone.</p>
+        <form class="catering-form" id="reservationForm">
+          <div class="form-row">
+            <label>Name
+              <input type="text" name="name" required>
+            </label>
+            <label>Phone
+              <input type="tel" name="phone" required>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Party size
+              <input type="number" name="partySize" min="1" value="2" required>
+            </label>
+            <label>Location
+              <select name="location">
+                <% locations.forEach(function(loc){ %><option><%= loc.name %></option><% }) %>
+              </select>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Date
+              <input type="date" name="date" required>
+            </label>
+            <label>Time
+              <input type="time" name="time" required>
+            </label>
+          </div>
+          <label>Notes (optional)
+            <textarea name="notes" rows="2" placeholder="High chair, allergies, celebration…"></textarea>
+          </label>
+          <button type="submit" class="btn btn--primary btn--large btn--block">Request Table</button>
+        </form>
+        <p class="newsletter__msg" id="reservationMsg" role="status" aria-live="polite"></p>
+
+        <% if (locations.length) { %>
+        <div class="quick-contact-list">
+          <% locations.forEach(function(loc){ %>
+            <div class="quick-contact-item">
+              <strong><%= loc.name %></strong>
+              <a href="tel:<%= loc.phone.replace(/[^0-9]/g,'') %>"><%= loc.phone %></a>
+            </div>
+          <% }) %>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <% if (faqs.length) { %>
+  <section class="section section--charcoal" id="faq">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light" data-reveal>Good to Know</p>
+      <h2 class="light-heading" data-reveal>Frequently asked questions.</h2>
+      <div class="faq-list" data-reveal data-reveal-delay="1">
+        <% faqs.forEach(function(f){ %>
+        <div class="faq-item">
+          <button class="faq-item__q"><%= f.question %> <span>+</span></button>
+          <div class="faq-item__a"><p><%= f.answer %></p></div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js"></script>
+<script>
+  const reservationForm = document.getElementById('reservationForm');
+  const reservationMsg = document.getElementById('reservationMsg');
+  if (reservationForm) {
+    reservationForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(reservationForm);
+      const payload = Object.fromEntries(formData.entries());
+      reservationMsg.textContent = "Sending your request…";
+      reservationMsg.classList.add('is-visible');
+      try {
+        const res = await fetch('/api/reservations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        reservationMsg.textContent = data.message;
+        if (data.ok) reservationForm.reset();
+      } catch (err) {
+        reservationMsg.textContent = "Something went wrong sending that — please call us instead.";
+      }
+    });
+  }
+
+  document.querySelectorAll('.faq-item__q').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const wasOpen = item.classList.contains('is-open');
+      document.querySelectorAll('.faq-item.is-open').forEach(el => el.classList.remove('is-open'));
+      if (!wasOpen) item.classList.add('is-open');
+    });
+  });
+</script>
+</body>
+</html>

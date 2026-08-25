@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <% if (typeof error !== 'undefined' && error) { %><div class="a-form-error"><%= error %></div><% } %>
+
+      <form class="a-form" method="POST" action="<%= isNew ? '/admin/' + config.key : '/admin/' + config.key + '/' + row.id %>">
+        <% config.fields.forEach(function(field){ %>
+          <% const value = row[field.name] !== undefined ? row[field.name] : field.default; %>
+          <div class="a-field">
+            <% if (field.type === 'boolean') { %>
+              <label class="a-checkbox">
+                <input type="checkbox" name="<%= field.name %>" <%= value ? 'checked' : '' %>>
+                <%= field.name.replace(/_/g, ' ') %>
+              </label>
+            <% } else { %>
+              <label for="f_<%= field.name %>"><%= field.name.replace(/_/g, ' ') %><%= field.required ? ' *' : '' %></label>
+              <% if (field.type === 'textarea' || field.type === 'tags') { %>
+                <textarea id="f_<%= field.name %>" name="<%= field.name %>" <%= field.required ? 'required' : '' %>><%= value || '' %></textarea>
+              <% } else if (field.type === 'select') { %>
+                <select id="f_<%= field.name %>" name="<%= field.name %>">
+                  <% field.options.forEach(function(opt){ %>
+                    <option value="<%= opt %>" <%= value === opt ? 'selected' : '' %>><%= opt %></option>
+                  <% }) %>
+                </select>
+              <% } else if (field.type === 'number') { %>
+                <input type="number" id="f_<%= field.name %>" name="<%= field.name %>" value="<%= value !== undefined && value !== null ? value : '' %>" <%= field.min !== undefined ? 'min=' + field.min : '' %> <%= field.max !== undefined ? 'max=' + field.max : '' %> <%= field.required ? 'required' : '' %>>
+              <% } else { %>
+                <input type="text" id="f_<%= field.name %>" name="<%= field.name %>" value="<%= value || '' %>" <%= field.required ? 'required' : '' %>>
+              <% } %>
+            <% } %>
+            <% if (field.help) { %><p class="a-field__help"><%= field.help %></p><% } %>
+          </div>
+        <% }) %>
+
+        <div class="a-form-actions">
+          <button type="submit" class="a-btn a-btn--primary"><%= isNew ? 'Create' : 'Save Changes' %></button>
+          <a href="/admin/<%= config.key %>" class="a-btn">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+</body>
+</html>

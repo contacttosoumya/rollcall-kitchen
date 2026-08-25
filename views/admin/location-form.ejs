@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <form class="a-form" method="POST" action="<%= isNew ? '/admin/locations' : '/admin/locations/' + location.id %>">
+        <div class="a-field-row">
+          <div class="a-field">
+            <label for="name">Name *</label>
+            <input type="text" id="name" name="name" value="<%= location.name || '' %>" required>
+          </div>
+          <div class="a-field">
+            <label for="slug">Slug *</label>
+            <input type="text" id="slug" name="slug" value="<%= location.slug || '' %>" required>
+          </div>
+        </div>
+
+        <div class="a-field">
+          <label for="address">Address *</label>
+          <input type="text" id="address" name="address" value="<%= location.address || '' %>" required>
+        </div>
+
+        <div class="a-field">
+          <label for="map_query">Map Search Query</label>
+          <input type="text" id="map_query" name="map_query" value="<%= location.map_query || location.address || '' %>">
+          <p class="a-field__help">What's used for Google Maps directions — usually the same as the address.</p>
+        </div>
+
+        <div class="a-field">
+          <label for="phone">Phone *</label>
+          <input type="text" id="phone" name="phone" value="<%= location.phone || '' %>" required>
+        </div>
+
+        <div class="a-field">
+          <label>Hours</label>
+          <div id="hoursRepeater">
+            <% location.hours.forEach(function(h){ %>
+              <div class="a-hours-row">
+                <input type="text" name="hours_days" placeholder="e.g. Mon – Thu" value="<%= h.days || '' %>">
+                <input type="text" name="hours_time" placeholder="e.g. 11:00 AM – 9:00 PM" value="<%= h.time || '' %>">
+                <button type="button" class="a-btn a-btn--sm a-btn--danger" onclick="this.parentElement.remove()">Remove</button>
+              </div>
+            <% }) %>
+          </div>
+          <button type="button" class="a-btn a-btn--sm" id="addHoursRow">+ Add Row</button>
+        </div>
+
+        <div class="a-field">
+          <label for="features">Features (one per line)</label>
+          <textarea id="features" name="features"><%= (location.features || []).join('\n') %></textarea>
+        </div>
+
+        <div class="a-field-row">
+          <div class="a-field">
+            <label class="a-checkbox"><input type="checkbox" name="is_active" <%= location.is_active !== false ? 'checked' : '' %>> Active (shown on site)</label>
+          </div>
+          <div class="a-field">
+            <label for="sort_order">Sort Order</label>
+            <input type="number" id="sort_order" name="sort_order" value="<%= location.sort_order || 0 %>">
+          </div>
+        </div>
+
+        <div class="a-form-actions">
+          <button type="submit" class="a-btn a-btn--primary"><%= isNew ? 'Create Location' : 'Save Changes' %></button>
+          <a href="/admin/locations" class="a-btn">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+<script>
+  document.getElementById('addHoursRow').addEventListener('click', () => {
+    const row = document.createElement('div');
+    row.className = 'a-hours-row';
+    row.innerHTML = `
+      <input type="text" name="hours_days" placeholder="e.g. Mon – Thu">
+      <input type="text" name="hours_time" placeholder="e.g. 11:00 AM – 9:00 PM">
+      <button type="button" class="a-btn a-btn--sm a-btn--danger" onclick="this.parentElement.remove()">Remove</button>
+    `;
+    document.getElementById('hoursRepeater').appendChild(row);
+  });
+</script>
+</body>
+</html>

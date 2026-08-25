@@ -1,0 +1,39 @@
+RollCall Kitchen — Admin Panel Visual Redesign
+================================================
+
+HOW TO APPLY
+------------
+1. Extract this zip directly into your project root
+   (/Users/soumya/Documents/node_workspace/roll-call-kitchen) —
+   it will overwrite these 5 existing files in their correct folders.
+
+2. Restart your server:
+     lsof -ti:3000 | xargs kill -9
+     npm start
+
+3. Visit http://localhost:3000/admin/login and hard-refresh
+   (Cmd+Shift+R) to make sure you're not looking at a cached
+   copy of the old admin.css.
+
+No database migration, no npm install, no new env vars — this was a
+pure front-end/styling change.
+
+
+FILES IN THIS DELIVERY (5, all modified — no new files)
+----------------------------------------------------------
+  views/admin/partials/head.ejs      — added logo favicon + brand Google Fonts
+  views/admin/partials/nav.ejs       — sidebar rebuilt with real logo + custom SVG icons
+  views/admin/partials/topbar.ejs    — polished user icon
+  views/admin/login.ejs              — mascot image header on the login card
+  public/css/admin.css               — full rebuild using the customer site's
+                                        actual color palette and fonts (Anton,
+                                        Space Mono, Plus Jakarta Sans)
+
+
+NOTE ON FONTS
+-------------
+The Anton/Space Mono/Plus Jakarta Sans fonts load from Google Fonts over
+the network (same as your customer-facing site already does). If they
+don't appear to load, check your internet connection — there's no local
+font file involved, it's the same CDN link your main site already uses
+successfully.

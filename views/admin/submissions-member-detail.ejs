@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <div class="a-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h2 style="margin:0 0 4px;"><%= member.email %></h2>
+            <p style="margin:0; color:var(--a-ink-soft);">Phone: <%= member.phone || '—' %> · Member since <%= new Date(member.subscribed_at).toLocaleDateString() %></p>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:1.8rem; font-weight:800; color:var(--a-primary);"><%= member.points.toLocaleString() %></span>
+            <p style="margin:0; font-size:.78rem; color:var(--a-ink-soft);">current points</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="a-card">
+        <h3 style="margin-top:0; font-size:.95rem;">Manual Adjustment</h3>
+        <form method="POST" action="/admin/submissions/members/<%= member.id %>/adjust" style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;">
+          <div class="a-field" style="margin:0;">
+            <label>Direction</label>
+            <select name="direction">
+              <option value="earn">Add points</option>
+              <option value="redeem">Deduct points</option>
+            </select>
+          </div>
+          <div class="a-field" style="margin:0;">
+            <label>Points</label>
+            <input type="number" name="points" min="1" required style="width:120px;">
+          </div>
+          <div class="a-field" style="margin:0; flex:1; min-width:200px;">
+            <label>Reason</label>
+            <input type="text" name="reason" placeholder="e.g. Goodwill credit — order issue">
+          </div>
+          <button type="submit" class="a-btn a-btn--primary">Apply</button>
+        </form>
+      </div>
+
+      <div class="a-card">
+        <h3 style="margin-top:0; font-size:.95rem;">Points History</h3>
+        <% if (!ledger.length) { %>
+          <p class="a-empty">No activity yet.</p>
+        <% } else { %>
+        <table class="a-table">
+          <thead><tr><th>Date</th><th>Direction</th><th>Points</th><th>Reason</th><th>Source</th></tr></thead>
+          <tbody>
+            <% ledger.forEach(function(l){ %>
+            <tr>
+              <td><%= new Date(l.created_at).toLocaleString() %></td>
+              <td><span class="a-badge <%= l.direction === 'earn' ? 'a-badge--success' : 'a-badge--warn' %>"><%= l.direction %></span></td>
+              <td><%= l.direction === 'earn' ? '+' : '-' %><%= l.points %></td>
+              <td><%= l.reason %></td>
+              <td><%= l.source %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+
+      <div class="a-card">
+        <h3 style="margin-top:0; font-size:.95rem;">Redemptions</h3>
+        <% if (!redemptions.length) { %>
+          <p class="a-empty">No redemptions yet.</p>
+        <% } else { %>
+        <table class="a-table">
+          <thead><tr><th>Code</th><th>Reward</th><th>Points Spent</th><th>Status</th><th>Expires</th></tr></thead>
+          <tbody>
+            <% redemptions.forEach(function(r){ %>
+            <tr>
+              <td><code><%= r.code %></code></td>
+              <td><%= r.reward_name %></td>
+              <td><%= r.points_spent %></td>
+              <td>
+                <span class="a-badge <%= r.status === 'active' ? 'a-badge--success' : r.status === 'used' ? 'a-badge--neutral' : 'a-badge--danger' %>"><%= r.status %></span>
+              </td>
+              <td><%= new Date(r.expires_at).toLocaleString() %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

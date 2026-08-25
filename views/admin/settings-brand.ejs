@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <form class="a-form" method="POST" action="/admin/settings/brand">
+        <div class="a-card" style="background:var(--a-warn-bg); border-color:var(--a-warn); margin-bottom:20px;">
+          <p style="margin:0; font-size:.85rem;">
+            📍 Phone number and address are managed on the
+            <a href="/admin/locations" style="text-decoration:underline; font-weight:700;">Locations</a>
+            page instead — the header, footer, and every page on the site pull from your location record directly, so there's one single place to update them.
+          </p>
+        </div>
+        <div class="a-field-row">
+          <div class="a-field"><label>Business Name</label><input type="text" name="name" value="<%= brand.name || '' %>"></div>
+          <div class="a-field"><label>Tagline</label><input type="text" name="tagline" value="<%= brand.tagline || '' %>"></div>
+        </div>
+        <div class="a-field"><label>Email</label><input type="email" name="email" value="<%= brand.email || '' %>"></div>
+        <div class="a-field-row">
+          <div class="a-field"><label>Instagram URL</label><input type="text" name="instagram" value="<%= brand.instagram || '' %>"></div>
+          <div class="a-field"><label>Facebook URL</label><input type="text" name="facebook" value="<%= brand.facebook || '' %>"></div>
+        </div>
+        <div class="a-field-row">
+          <div class="a-field"><label>DoorDash URL</label><input type="text" name="doordash" value="<%= brand.doordash || '' %>"></div>
+          <div class="a-field"><label>Uber Eats URL</label><input type="text" name="ubereats" value="<%= brand.ubereats || '' %>"></div>
+        </div>
+        <div class="a-form-actions">
+          <button type="submit" class="a-btn a-btn--primary">Save Changes</button>
+          <a href="/admin/settings" class="a-btn">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+</body>
+</html>

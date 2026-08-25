@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <div class="a-card" style="padding:0;">
+        <% if (!reservations.length) { %>
+          <p class="a-empty">No reservations yet.</p>
+        <% } else { %>
+        <table class="a-table">
+          <thead><tr><th>Name</th><th>Phone</th><th>Party</th><th>Location</th><th>Date</th><th>Time</th><th>Status</th></tr></thead>
+          <tbody>
+            <% reservations.forEach(function(r){ %>
+            <tr>
+              <td><%= r.name %></td>
+              <td><%= r.phone %></td>
+              <td><%= r.party_size %></td>
+              <td><%= r.location_name || '—' %></td>
+              <td><%= new Date(r.reservation_date).toLocaleDateString() %></td>
+              <td><%= r.reservation_time %></td>
+              <td>
+                <form method="POST" action="/admin/submissions/reservations/<%= r.id %>/status">
+                  <select name="status" onchange="this.form.submit()">
+                    <option value="pending" <%= r.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                    <option value="confirmed" <%= r.status === 'confirmed' ? 'selected' : '' %>>Confirmed</option>
+                    <option value="cancelled" <%= r.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                  </select>
+                </form>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

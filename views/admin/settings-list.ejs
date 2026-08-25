@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <p style="color:var(--a-ink-soft); margin-top:0;">
+        Brand info and the coming-soon banner have friendly editors below. Everything else is editable too, via a raw JSON editor — useful for hero copy, marquee items, and trust-bar stats.
+      </p>
+      <div class="a-card" style="padding:0;">
+        <table class="a-table">
+          <thead><tr><th>Key</th><th>Last Updated</th><th></th></tr></thead>
+          <tbody>
+            <% blocks.forEach(function(b){ %>
+            <tr>
+              <td><code><%= b.key %></code></td>
+              <td><%= new Date(b.updated_at).toLocaleString() %></td>
+              <td class="a-table__actions">
+                <% if (b.key === 'brand') { %>
+                  <a href="/admin/settings/brand" class="a-btn a-btn--sm a-btn--primary">Edit</a>
+                <% } else if (b.key === 'coming_soon_banner') { %>
+                  <a href="/admin/settings/banner" class="a-btn a-btn--sm a-btn--primary">Edit</a>
+                <% } else { %>
+                  <a href="/admin/settings/<%= b.key %>/raw" class="a-btn a-btn--sm">Edit JSON</a>
+                <% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

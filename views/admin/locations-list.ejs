@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <div style="display:flex; justify-content:flex-end; margin-bottom:14px;">
+        <a href="/admin/locations/new" class="a-btn a-btn--primary">+ Add Location</a>
+      </div>
+      <div class="a-card" style="padding:0;">
+        <table class="a-table">
+          <thead><tr><th>Name</th><th>Address</th><th>Phone</th><th>Active</th><th></th></tr></thead>
+          <tbody>
+            <% locations.forEach(function(l){ %>
+            <tr>
+              <td><%= l.name %></td>
+              <td><%= l.address %></td>
+              <td><%= l.phone %></td>
+              <td><span class="a-badge <%= l.is_active ? 'a-badge--success' : 'a-badge--neutral' %>"><%= l.is_active ? 'Yes' : 'No' %></span></td>
+              <td class="a-table__actions">
+                <a href="/admin/locations/<%= l.id %>/edit" class="a-btn a-btn--sm">Edit</a>
+                <form method="POST" action="/admin/locations/<%= l.id %>/delete" onsubmit="return confirm('Delete this location?');" style="display:inline;">
+                  <button type="submit" class="a-btn a-btn--sm a-btn--danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

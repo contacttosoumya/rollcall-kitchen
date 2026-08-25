@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="page-rewards">
+<%- include('partials/header') %>
+
+<% const rewardsHero = (content.page_heroes && content.page_heroes.rewards) || {}; %>
+<% const rewardsJoin = content.rewards_join || {}; %>
+
+<main>
+  <section class="page-hero page-hero--rewards">
+    <div class="wrap">
+      <% if (rewardsHero.eyebrow) { %><p class="eyebrow eyebrow--light" data-reveal><%= rewardsHero.eyebrow %></p><% } %>
+      <h1 class="light-heading" data-reveal><%= rewardsHero.title || 'Eat more. Earn more. Repeat.' %></h1>
+      <p class="page-hero__sub" data-reveal data-reveal-delay="1"><%= rewardsHero.subtitle || '' %></p>
+      <% if (!member) { %>
+      <div class="hero__cta" data-reveal data-reveal-delay="2">
+        <a href="#join" class="btn btn--primary btn--large">Join Free — Get 100 Points</a>
+      </div>
+      <% } %>
+    </div>
+  </section>
+
+  <% if (steps.length) { %>
+  <section class="section section--cream">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">How It Works</p>
+        <h2>Three steps, forever free.</h2>
+      </div>
+      <div class="steps-grid">
+        <% steps.forEach(function(s, i){ %>
+        <div class="step-card" data-reveal data-reveal-delay="<%= i % 3 %>">
+          <span class="step-card__num"><%= s.stepNumber %></span>
+          <h3><%= s.title %></h3>
+          <p><%= s.description %></p>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (tiers.length) { %>
+  <section class="section section--charcoal">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light" data-reveal>Tiers</p>
+      <h2 class="light-heading" data-reveal>The more you order, the more you unlock.</h2>
+      <div class="tier-grid">
+        <% tiers.forEach(function(t, i){ %>
+        <div class="tier-card <%= t.isFeatured ? 'tier-card--featured' : (i === 0 ? 'tier-card--bronze' : (i === tiers.length - 1 ? 'tier-card--gold' : '')) %>" data-reveal data-reveal-delay="<%= i % 3 %>">
+          <span class="tier-card__badge"><%= t.badge %></span>
+          <p class="tier-card__req"><%= t.pointsRange %></p>
+          <ul>
+            <% t.perks.forEach(function(perk){ %><li><%= perk %></li><% }) %>
+          </ul>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (member) { %>
+  <!-- LOGGED-IN VIEW -->
+  <section class="section section--cream" id="my-rewards">
+    <div class="wrap points-balance-card" data-reveal>
+      <p class="eyebrow">Signed In</p>
+      <h2>Welcome back!</h2>
+      <p class="points-balance-card__email"><%= member.email %></p>
+      <div class="points-balance-card__amount" id="pointsBalanceAmount"><%= member.points %></div>
+      <p class="points-balance-card__label">points available</p>
+      <div class="hero__cta">
+        <a href="/menu" class="btn btn--primary">Order Now</a>
+        <form method="POST" action="/rewards/logout" style="display:inline;">
+          <button type="submit" class="btn btn--outline">Sign Out</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <% if (catalog.length) { %>
+  <section class="section section--charcoal" id="redeem">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light" data-reveal>Spend Your Points</p>
+      <h2 class="light-heading" data-reveal>Redeem a reward.</h2>
+      <p class="page-hero__sub" data-reveal>
+        Points are deducted the moment you redeem. You'll get a code — show it in-store to claim it.
+      </p>
+
+      <div class="redeem-result" id="redeemResult" hidden data-reveal>
+        <span class="redeem-result__icon">🎉</span>
+        <p class="redeem-result__reward" id="redeemResultReward"></p>
+        <p class="redeem-result__code" id="redeemResultCode"></p>
+        <p class="redeem-result__expiry" id="redeemResultExpiry"></p>
+      </div>
+
+      <div class="redeem-grid">
+        <% catalog.forEach(function(item, i){ %>
+        <div class="redeem-card <%= member.points < item.pointsCost ? 'redeem-card--locked' : '' %>" data-reveal data-reveal-delay="<%= i % 3 %>">
+          <h3><%= item.name %></h3>
+          <p><%= item.description %></p>
+          <div class="redeem-card__foot">
+            <span class="redeem-card__cost"><%= item.pointsCost.toLocaleString() %> pts</span>
+            <button
+              class="btn btn--primary btn--small redeem-btn"
+              data-item-id="<%= item.id %>"
+              data-item-name="<%= item.name %>"
+              data-item-cost="<%= item.pointsCost %>"
+              <%= member.points < item.pointsCost ? 'disabled' : '' %>>
+              Redeem
+            </button>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+  <% } %>
+
+  <section class="section section--cream" id="link-phone">
+    <div class="wrap link-phone-card" data-reveal>
+      <p class="eyebrow">Optional</p>
+      <h2>Order by phone or delivery app?</h2>
+      <p>Add your phone number so future orders can earn points on this same account — no separate sign-up needed.</p>
+      <% if (member.phone) { %>
+        <p class="link-phone-card__linked">✅ Phone linked: <%= member.phone %></p>
+      <% } else { %>
+        <form class="rewards-join__form" id="linkPhoneForm">
+          <label class="sr-only" for="linkPhoneInput">Phone number</label>
+          <input type="tel" id="linkPhoneInput" name="phone" placeholder="(704) 555-0142" required>
+          <button type="submit" class="btn btn--outline btn--large">Link Phone Number</button>
+        </form>
+        <p class="newsletter__msg" id="linkPhoneMsg" role="status" aria-live="polite"></p>
+      <% } %>
+    </div>
+  </section>
+  <% } else { %>
+  <!-- LOGGED-OUT VIEW -->
+  <section class="section section--cream" id="join">
+    <div class="wrap rewards-join">
+      <div data-reveal>
+        <% if (rewardsJoin.eyebrow) { %><p class="eyebrow"><%= rewardsJoin.eyebrow %></p><% } %>
+        <h2><%= rewardsJoin.heading || 'Get 100 points before your first order.' %></h2>
+        <p><%= rewardsJoin.body || '' %></p>
+      </div>
+      <form class="rewards-join__form" id="rewardsJoinForm" data-reveal data-reveal-delay="1">
+        <label class="sr-only" for="rewardsEmail">Email address</label>
+        <input type="email" id="rewardsEmail" name="email" placeholder="you@email.com" required>
+        <button type="submit" class="btn btn--primary btn--large">Join RollCall Rewards</button>
+      </form>
+      <p class="newsletter__msg" id="rewardsMsg" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="section section--charcoal" id="sign-in">
+    <div class="wrap points-check">
+      <div data-reveal>
+        <p class="eyebrow eyebrow--light">Already a Member?</p>
+        <h2 class="light-heading">Sign in to see your points.</h2>
+        <p class="page-hero__sub" style="margin:0;">
+          Enter your email and we'll send you a one-tap sign-in link — no password needed.
+        </p>
+        <% if (loginStatus === 'expired') { %>
+          <p class="points-check__notice">That sign-in link expired or was already used — request a new one below.</p>
+        <% } %>
+      </div>
+      <form class="rewards-join__form" id="loginLinkForm" data-reveal data-reveal-delay="1">
+        <label class="sr-only" for="loginLinkEmail">Email address</label>
+        <input type="email" id="loginLinkEmail" name="email" placeholder="you@email.com" required>
+        <button type="submit" class="btn btn--outline-light btn--large">Email Me a Sign-In Link</button>
+      </form>
+      <p class="newsletter__msg" id="loginLinkMsg" role="status" aria-live="polite" style="color:var(--paper);"></p>
+    </div>
+  </section>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js"></script>
+<script>
+  const rewardsForm = document.getElementById('rewardsJoinForm');
+  const rewardsMsg = document.getElementById('rewardsMsg');
+  if (rewardsForm) {
+    rewardsForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('rewardsEmail').value;
+      try {
+        const res = await fetch('/api/newsletter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        rewardsMsg.textContent = data.ok
+          ? `🎉 Welcome to RollCall Rewards! You've got ${data.points} points — check your inbox too.`
+          : (data.message || "Something went wrong — please try again.");
+        rewardsMsg.classList.add('is-visible');
+        if (data.ok) rewardsForm.reset();
+      } catch (err) {
+        rewardsMsg.textContent = "Something went wrong — please try again in a moment.";
+        rewardsMsg.classList.add('is-visible');
+      }
+    });
+  }
+
+  const loginLinkForm = document.getElementById('loginLinkForm');
+  const loginLinkMsg = document.getElementById('loginLinkMsg');
+  if (loginLinkForm) {
+    loginLinkForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginLinkEmail').value;
+      loginLinkMsg.textContent = "Sending…";
+      loginLinkMsg.classList.add('is-visible');
+      try {
+        const res = await fetch('/api/rewards/login-link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        loginLinkMsg.textContent = data.ok
+          ? "📬 Check your inbox — your sign-in link is on its way."
+          : (data.message || "Something went wrong — please try again.");
+        if (data.ok) loginLinkForm.reset();
+      } catch (err) {
+        loginLinkMsg.textContent = "Something went wrong — please try again in a moment.";
+      }
+    });
+  }
+
+  const redeemResult = document.getElementById('redeemResult');
+  const balanceAmount = document.getElementById('pointsBalanceAmount');
+  document.querySelectorAll('.redeem-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      if (btn.disabled) return;
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Redeeming…';
+      try {
+        const res = await fetch('/api/rewards/redeem', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ catalogItemId: btn.dataset.itemId })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          document.getElementById('redeemResultReward').textContent = data.rewardName;
+          document.getElementById('redeemResultCode').textContent = data.code;
+          document.getElementById('redeemResultExpiry').textContent =
+            'Show this code in-store — valid for 24 hours.';
+          redeemResult.hidden = false;
+          redeemResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (balanceAmount) balanceAmount.textContent = data.remainingPoints;
+          // Re-lock any cards the new balance can no longer afford.
+          document.querySelectorAll('.redeem-btn').forEach((b) => {
+            const cost = parseInt(b.dataset.itemCost, 10);
+            if (cost > data.remainingPoints) {
+              b.disabled = true;
+              b.closest('.redeem-card')?.classList.add('redeem-card--locked');
+            }
+          });
+          btn.textContent = 'Redeemed ✓';
+        } else {
+          alert(data.message || 'Something went wrong — please try again.');
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+      } catch (err) {
+        alert('Something went wrong — please try again in a moment.');
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    });
+  });
+
+  const linkPhoneForm = document.getElementById('linkPhoneForm');
+  const linkPhoneMsg = document.getElementById('linkPhoneMsg');
+  if (linkPhoneForm) {
+    linkPhoneForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const phone = document.getElementById('linkPhoneInput').value;
+      linkPhoneMsg.textContent = 'Linking…';
+      linkPhoneMsg.classList.add('is-visible');
+      try {
+        const res = await fetch('/api/rewards/link-phone', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone })
+        });
+        const data = await res.json();
+        linkPhoneMsg.textContent = data.message || (data.ok ? 'Phone linked!' : 'Something went wrong.');
+        if (data.ok) setTimeout(() => window.location.reload(), 900);
+      } catch (err) {
+        linkPhoneMsg.textContent = 'Something went wrong — please try again in a moment.';
+      }
+    });
+  }
+</script>
+</body>
+</html>

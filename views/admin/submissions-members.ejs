@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <div class="a-card" style="padding:0;">
+        <% if (!members.length) { %>
+          <p class="a-empty">No members yet.</p>
+        <% } else { %>
+        <table class="a-table">
+          <thead><tr><th>Email</th><th>Phone</th><th>Points</th><th>Member Since</th><th></th></tr></thead>
+          <tbody>
+            <% members.forEach(function(m){ %>
+            <tr>
+              <td><%= m.email %></td>
+              <td><%= m.phone || '—' %></td>
+              <td><strong><%= m.points.toLocaleString() %></strong></td>
+              <td><%= new Date(m.subscribed_at).toLocaleDateString() %></td>
+              <td class="a-table__actions"><a href="/admin/submissions/members/<%= m.id %>" class="a-btn a-btn--sm">View Detail</a></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

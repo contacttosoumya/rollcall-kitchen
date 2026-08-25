@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <% if (error) { %><div class="a-form-error"><%= error %></div><% } %>
+      <form class="a-form" method="POST" action="/admin/settings/<%= key %>/raw" style="max-width:800px;">
+        <div class="a-field">
+          <label for="valueJson">Value (raw JSON) — key: <code><%= key %></code></label>
+          <textarea id="valueJson" name="valueJson" class="a-json-editor"><%= valueJson %></textarea>
+          <p class="a-field__help">Must be valid JSON. Whatever shape this key currently has is what the site templates expect — check the live page after saving.</p>
+        </div>
+        <div class="a-form-actions">
+          <button type="submit" class="a-btn a-btn--primary">Save Changes</button>
+          <a href="/admin/settings" class="a-btn">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <% if (!requests.length) { %>
+        <div class="a-card"><p class="a-empty">No catering requests yet.</p></div>
+      <% } %>
+      <% requests.forEach(function(r){ %>
+      <div class="a-card">
+        <div style="display:flex; justify-content:space-between; align-items:start;">
+          <div>
+            <strong><%= r.name %></strong> — <a href="mailto:<%= r.email %>"><%= r.email %></a> · <%= r.phone %>
+            <p style="margin:4px 0 0; font-size:.8rem; color:var(--a-ink-soft);">
+              Event: <%= r.event_date ? new Date(r.event_date).toLocaleDateString() : '—' %> · Guests: <%= r.guest_count || '—' %> · Submitted <%= new Date(r.created_at).toLocaleString() %>
+            </p>
+          </div>
+          <form method="POST" action="/admin/submissions/catering/<%= r.id %>/status">
+            <select name="status" onchange="this.form.submit()">
+              <option value="new" <%= r.status === 'new' ? 'selected' : '' %>>New</option>
+              <option value="quoted" <%= r.status === 'quoted' ? 'selected' : '' %>>Quoted</option>
+              <option value="booked" <%= r.status === 'booked' ? 'selected' : '' %>>Booked</option>
+              <option value="closed" <%= r.status === 'closed' ? 'selected' : '' %>>Closed</option>
+            </select>
+          </form>
+        </div>
+        <p style="margin-bottom:0; white-space:pre-wrap;"><%= r.details %></p>
+      </div>
+      <% }) %>
+    </div>
+  </main>
+</div>
+</body>
+</html>

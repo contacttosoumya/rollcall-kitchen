@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <div style="display:flex; justify-content:flex-end; margin-bottom:14px;">
+        <a href="/admin/dishes/new" class="a-btn a-btn--primary">+ Add Dish</a>
+      </div>
+      <div class="a-card" style="padding:0;">
+        <table class="a-table">
+          <thead>
+            <tr><th>Name</th><th>Category</th><th>Price</th><th>Veg</th><th>Spice</th><th>Available</th><th></th></tr>
+          </thead>
+          <tbody>
+            <% dishes.forEach(function(d){ %>
+            <tr>
+              <td><%= d.name %></td>
+              <td><%= d.category_label %></td>
+              <td>$<%= (d.price_cents / 100).toFixed(2) %></td>
+              <td><span class="a-badge <%= d.is_veg ? 'a-badge--success' : 'a-badge--neutral' %>"><%= d.is_veg ? 'Veg' : 'Non-Veg' %></span></td>
+              <td><%= '🔥'.repeat(d.spice_level) || '—' %></td>
+              <td><span class="a-badge <%= d.is_available ? 'a-badge--success' : 'a-badge--danger' %>"><%= d.is_available ? 'Yes' : 'No' %></span></td>
+              <td class="a-table__actions">
+                <a href="/admin/dishes/<%= d.id %>/edit" class="a-btn a-btn--sm">Edit</a>
+                <form method="POST" action="/admin/dishes/<%= d.id %>/delete" onsubmit="return confirm('Delete this dish?');" style="display:inline;">
+                  <button type="submit" class="a-btn a-btn--sm a-btn--danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

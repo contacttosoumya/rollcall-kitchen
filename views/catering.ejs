@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="page-catering">
+<%- include('partials/header') %>
+
+<% const cateringHero = (content.page_heroes && content.page_heroes.catering) || {}; %>
+<% const errors = typeof formErrors !== 'undefined' ? formErrors : []; %>
+<% const values = typeof formValues !== 'undefined' ? formValues : {}; %>
+
+<main>
+  <section class="page-hero page-hero--catering">
+    <div class="wrap">
+      <% if (cateringHero.eyebrow) { %><p class="eyebrow eyebrow--light" data-reveal><%= cateringHero.eyebrow %></p><% } %>
+      <h1 class="light-heading" data-reveal><%= cateringHero.title || 'Feed your whole crew, still hot from the tandoor.' %></h1>
+      <p class="page-hero__sub" data-reveal data-reveal-delay="1"><%= cateringHero.subtitle || '' %></p>
+    </div>
+  </section>
+
+  <% if (packages.length) { %>
+  <section class="section section--cream">
+    <div class="wrap">
+      <div class="section-head section-head--align-right" data-reveal>
+        <p class="eyebrow">Popular Packages</p>
+        <h2>Pick a starting point — everything's customizable.</h2>
+      </div>
+      <div class="package-grid">
+        <% packages.forEach(function(p, i){ %>
+        <div class="package-card <%= p.isFeatured ? 'package-card--featured' : '' %>" data-reveal data-reveal-delay="<%= i % 3 %>">
+          <% if (p.tag) { %><span class="package-card__tag"><%= p.tag %></span><% } %>
+          <h3><%= p.name %></h3>
+          <p class="package-card__price"><%= p.priceLabel %></p>
+          <ul>
+            <% p.features.forEach(function(f){ %><li><%= f %></li><% }) %>
+          </ul>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+  <% } %>
+
+  <section class="section section--charcoal">
+    <div class="wrap catering-form-wrap">
+      <div data-reveal>
+        <p class="eyebrow eyebrow--light">Request a Quote</p>
+        <h2 class="light-heading">Tell us about your event.</h2>
+        <p class="page-hero__sub">We reply within one business day with a custom menu &amp; quote — no obligation.</p>
+        <ul class="checklist checklist--light">
+          <li>Serving Charlotte and the University City area</li>
+          <li>Vegetarian, vegan &amp; gluten-conscious menus available</li>
+          <li>Delivery, drop-off, or full-service staffing</li>
+        </ul>
+      </div>
+
+      <% if (typeof submitted !== 'undefined' && submitted) { %>
+        <div class="form-success" data-reveal data-reveal-delay="1">
+          <span class="form-success__icon">✅</span>
+          <h3>Request received!</h3>
+          <p>Thanks for reaching out — our catering team will follow up within one business day with a custom quote.</p>
+          <a href="/catering" class="text-link">Submit another request →</a>
+        </div>
+      <% } else { %>
+        <form class="catering-form" method="POST" action="/catering" data-reveal data-reveal-delay="1">
+          <% if (errors.length) { %>
+            <div class="form-errors" role="alert">
+              <% errors.forEach(function(msg){ %><p><%= msg %></p><% }) %>
+            </div>
+          <% } %>
+          <div class="form-row">
+            <label>Full name
+              <input type="text" name="name" value="<%= values.name || '' %>" required>
+            </label>
+            <label>Email
+              <input type="email" name="email" value="<%= values.email || '' %>" required>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Phone
+              <input type="tel" name="phone" value="<%= values.phone || '' %>" required>
+            </label>
+            <label>Event date
+              <input type="date" name="eventDate" value="<%= values.eventDate || '' %>" required>
+            </label>
+          </div>
+          <label>Estimated guest count
+            <input type="number" name="guestCount" min="10" placeholder="e.g. 40" value="<%= values.guestCount || '' %>">
+          </label>
+          <label>Tell us about your event
+            <textarea name="details" rows="4" placeholder="Event type, dietary needs, budget range, venue…"><%= values.details || '' %></textarea>
+          </label>
+          <button type="submit" class="btn btn--primary btn--large btn--block">Send Catering Request</button>
+        </form>
+      <% } %>
+    </div>
+  </section>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js"></script>
+</body>
+</html>

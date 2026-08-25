@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="page-locations">
+<%- include('partials/header') %>
+
+<% const locHero = (content.page_heroes && content.page_heroes.locations) || {}; %>
+
+<main>
+  <section class="page-hero page-hero--locations">
+    <div class="wrap">
+      <% if (locHero.eyebrow) { %><p class="eyebrow eyebrow--light" data-reveal><%= locHero.eyebrow %></p><% } %>
+      <h1 class="light-heading" data-reveal><%= locHero.title || 'Find RollCall Kitchen.' %></h1>
+      <p class="page-hero__sub" data-reveal data-reveal-delay="1"><%= locHero.subtitle || '' %></p>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="wrap locations-list">
+      <% locations.forEach(function(loc, i){ %>
+        <article class="location-detail" id="<%= loc.slug %>" data-reveal data-reveal-delay="<%= i % 2 %>">
+          <div class="location-detail__map" aria-hidden="true">
+            <svg viewBox="0 0 400 320" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+              <rect width="400" height="320" fill="var(--paper-dim)"/>
+              <path d="M-10 60 L420 40" stroke="var(--line)" stroke-width="10" fill="none"/>
+              <path d="M-10 180 L420 195" stroke="var(--line)" stroke-width="14" fill="none"/>
+              <path d="M-10 280 L420 265" stroke="var(--line)" stroke-width="8" fill="none"/>
+              <path d="M60 -10 L90 330" stroke="var(--line)" stroke-width="9" fill="none"/>
+              <path d="M300 -10 L280 330" stroke="var(--line)" stroke-width="9" fill="none"/>
+              <rect x="110" y="80" width="46" height="34" rx="4" fill="var(--paper)" opacity=".8"/>
+              <rect x="190" y="220" width="52" height="38" rx="4" fill="var(--paper)" opacity=".8"/>
+              <rect x="30" y="200" width="40" height="30" rx="4" fill="var(--paper)" opacity=".8"/>
+              <g transform="translate(200,150)">
+                <ellipse cx="0" cy="58" rx="22" ry="6" fill="#000" opacity=".12"/>
+                <path d="M0 -46C-24 -46 -40 -28 -40 -6c0 30 40 64 40 64s40-34 40-64c0-22-16-40-40-40Z" fill="var(--chili)"/>
+                <circle cx="0" cy="-6" r="16" fill="var(--paper)"/>
+                <text x="0" y="5" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="15" fill="var(--chili)">RC</text>
+              </g>
+            </svg>
+          </div>
+          <div class="location-detail__body">
+            <h2><%= loc.name %></h2>
+            <p class="location-detail__address">📍 <%= loc.address %></p>
+            <p class="location-detail__phone">📞 <a href="tel:<%= loc.phone.replace(/[^0-9]/g,'') %>"><%= loc.phone %></a></p>
+
+            <% if (loc.hours.length) { %>
+            <div class="location-detail__hours">
+              <h3>Hours</h3>
+              <ul>
+                <% loc.hours.forEach(function(h){ %>
+                  <li><span><%= h.days %></span><span><%= h.time %></span></li>
+                <% }) %>
+              </ul>
+            </div>
+            <% } %>
+
+            <% if (loc.features.length) { %>
+            <div class="tag-row">
+              <% loc.features.forEach(function(f){ %><span class="tag"><%= f %></span><% }) %>
+            </div>
+            <% } %>
+
+            <div class="hero__cta">
+              <a href="https://maps.google.com/maps?q=<%= encodeURIComponent(loc.mapQuery) %>" target="_blank" rel="noopener" class="btn btn--outline">Get Directions</a>
+              <a href="/menu" class="btn btn--primary">Order From <%= loc.name %></a>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+
+      <% if (!locations.length) { %>
+        <p class="menu-empty">We're between locations right now — check back soon, or <a href="/contact" class="text-link">contact us</a> for updates.</p>
+      <% } %>
+    </div>
+  </section>
+
+  <section class="section section--charcoal">
+    <div class="wrap final-cta__inner" data-reveal>
+      <h2 class="light-heading">Don't see us in your neighborhood yet?</h2>
+      <p class="page-hero__sub">We're expanding across the Carolinas. Tell us what you'd love to see next.</p>
+      <a href="/contact" class="btn btn--primary btn--large">Suggest a Location</a>
+    </div>
+  </section>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js"></script>
+</body>
+</html>

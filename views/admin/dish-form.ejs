@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <form class="a-form" method="POST" action="<%= isNew ? '/admin/dishes' : '/admin/dishes/' + dish.id %>">
+        <div class="a-field-row">
+          <div class="a-field">
+            <label for="name">Name *</label>
+            <input type="text" id="name" name="name" value="<%= dish.name || '' %>" required>
+          </div>
+          <div class="a-field">
+            <label for="slug">Slug *</label>
+            <input type="text" id="slug" name="slug" value="<%= dish.slug || '' %>" required>
+            <p class="a-field__help">Unique, used internally — e.g. "chicken-tikka-roll"</p>
+          </div>
+        </div>
+
+        <div class="a-field">
+          <label for="category_id">Category *</label>
+          <select id="category_id" name="category_id" required>
+            <% categories.forEach(function(c){ %>
+              <option value="<%= c.id %>" <%= dish.category_id === c.id ? 'selected' : '' %>><%= c.label %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="a-field">
+          <label for="description">Description</label>
+          <textarea id="description" name="description"><%= dish.description || '' %></textarea>
+        </div>
+
+        <div class="a-field-row">
+          <div class="a-field">
+            <label for="price">Price (USD) *</label>
+            <input type="number" id="price" name="price" step="0.01" min="0" value="<%= dish.price || '' %>" required>
+          </div>
+          <div class="a-field">
+            <label for="icon">Icon override</label>
+            <input type="text" id="icon" name="icon" value="<%= dish.icon || '' %>">
+            <p class="a-field__help">Optional — blank uses the category's icon.</p>
+          </div>
+        </div>
+
+        <div class="a-field-row">
+          <div class="a-field">
+            <label for="spice_level">Spice Level</label>
+            <select id="spice_level" name="spice_level">
+              <option value="0" <%= dish.spice_level === 0 ? 'selected' : '' %>>0 — Mild</option>
+              <option value="1" <%= dish.spice_level === 1 ? 'selected' : '' %>>1</option>
+              <option value="2" <%= dish.spice_level === 2 ? 'selected' : '' %>>2</option>
+              <option value="3" <%= dish.spice_level === 3 ? 'selected' : '' %>>3 — Hot</option>
+            </select>
+          </div>
+          <div class="a-field">
+            <label for="sort_order">Sort Order</label>
+            <input type="number" id="sort_order" name="sort_order" value="<%= dish.sort_order || 0 %>">
+          </div>
+        </div>
+
+        <div class="a-field">
+          <label>Tags</label>
+          <div class="a-tag-checks">
+            <% tagOptions.forEach(function(tag){ %>
+              <label class="a-checkbox">
+                <input type="checkbox" name="tag_<%= tag %>" <%= (dish.tags || []).includes(tag) ? 'checked' : '' %>>
+                <%= tag %>
+              </label>
+            <% }) %>
+          </div>
+        </div>
+
+        <div class="a-field">
+          <label class="a-checkbox"><input type="checkbox" name="is_veg" <%= dish.is_veg ? 'checked' : '' %>> Vegetarian</label>
+        </div>
+        <div class="a-field">
+          <label class="a-checkbox"><input type="checkbox" name="is_available" <%= dish.is_available !== false ? 'checked' : '' %>> Available on the menu</label>
+        </div>
+
+        <div class="a-form-actions">
+          <button type="submit" class="a-btn a-btn--primary"><%= isNew ? 'Create Dish' : 'Save Changes' %></button>
+          <a href="/admin/dishes" class="a-btn">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+</body>
+</html>

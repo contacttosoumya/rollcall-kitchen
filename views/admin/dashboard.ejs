@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <div class="a-stat-grid">
+        <div class="a-stat-card"><span class="a-stat-card__num"><%= stats.dishes %></span><span class="a-stat-card__label">Active dishes</span></div>
+        <div class="a-stat-card"><span class="a-stat-card__num"><%= stats.locations %></span><span class="a-stat-card__label">Locations</span></div>
+        <div class="a-stat-card"><span class="a-stat-card__num"><%= stats.members %></span><span class="a-stat-card__label">Rewards members</span></div>
+        <div class="a-stat-card"><span class="a-stat-card__num"><%= stats.activeRedemptions %></span><span class="a-stat-card__label">Active redemption codes</span></div>
+      </div>
+
+      <div class="a-card">
+        <h2 style="margin-top:0; font-size:1rem;">Needs attention</h2>
+        <table class="a-table">
+          <tbody>
+            <tr>
+              <td>New contact messages</td>
+              <td style="text-align:right;">
+                <% if (stats.newContactMessages > 0) { %><span class="a-badge a-badge--warn"><%= stats.newContactMessages %> new</span><% } else { %><span class="a-badge a-badge--success">All caught up</span><% } %>
+              </td>
+              <td style="text-align:right; width:120px;"><a href="/admin/submissions/contact" class="a-btn a-btn--sm">View →</a></td>
+            </tr>
+            <tr>
+              <td>New catering requests</td>
+              <td style="text-align:right;">
+                <% if (stats.newCateringRequests > 0) { %><span class="a-badge a-badge--warn"><%= stats.newCateringRequests %> new</span><% } else { %><span class="a-badge a-badge--success">All caught up</span><% } %>
+              </td>
+              <td style="text-align:right; width:120px;"><a href="/admin/submissions/catering" class="a-btn a-btn--sm">View →</a></td>
+            </tr>
+            <tr>
+              <td>Pending reservations</td>
+              <td style="text-align:right;">
+                <% if (stats.pendingReservations > 0) { %><span class="a-badge a-badge--warn"><%= stats.pendingReservations %> pending</span><% } else { %><span class="a-badge a-badge--success">All caught up</span><% } %>
+              </td>
+              <td style="text-align:right; width:120px;"><a href="/admin/submissions/reservations" class="a-btn a-btn--sm">View →</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="a-card">
+        <h2 style="margin-top:0; font-size:1rem;">Quick links</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a href="/admin/dishes/new" class="a-btn">+ New Dish</a>
+          <a href="/admin/testimonials/new" class="a-btn">+ New Testimonial</a>
+          <a href="/admin/settings/banner" class="a-btn">Edit Coming Soon Banner</a>
+          <a href="/admin/settings/brand" class="a-btn">Edit Brand Info</a>
+          <a href="/" target="_blank" class="a-btn">View Live Site ↗</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

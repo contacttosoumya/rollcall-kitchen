@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <p style="color:var(--a-ink-soft); margin-top:0;">
+        Every off-site order recorded via <code>POST /api/pos/orders</code> — manually today, or automatically once a real POS/delivery-platform integration exists.
+      </p>
+      <div class="a-card" style="padding:0;">
+        <% if (!orders.length) { %>
+          <p class="a-empty">No orders recorded yet.</p>
+        <% } else { %>
+        <table class="a-table">
+          <thead><tr><th>Date</th><th>Source</th><th>Customer</th><th>Amount</th><th>Points Awarded</th><th>Matched</th></tr></thead>
+          <tbody>
+            <% orders.forEach(function(o){ %>
+            <tr>
+              <td><%= new Date(o.created_at).toLocaleString() %></td>
+              <td><span class="a-badge a-badge--neutral"><%= o.source %></span></td>
+              <td><%= o.matched_email || o.customer_email || o.customer_phone || '—' %></td>
+              <td>$<%= (o.amount_cents / 100).toFixed(2) %></td>
+              <td><%= o.points_awarded %></td>
+              <td><%= o.subscriber_id ? '✅' : '—' %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

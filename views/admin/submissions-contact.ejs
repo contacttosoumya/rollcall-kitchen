@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <% if (!messages.length) { %>
+        <div class="a-card"><p class="a-empty">No messages yet.</p></div>
+      <% } %>
+      <% messages.forEach(function(m){ %>
+      <div class="a-card">
+        <div style="display:flex; justify-content:space-between; align-items:start;">
+          <div>
+            <strong><%= m.name %></strong> — <a href="mailto:<%= m.email %>"><%= m.email %></a>
+            <p style="margin:4px 0 0; font-size:.8rem; color:var(--a-ink-soft);"><%= m.subject %> · <%= new Date(m.created_at).toLocaleString() %></p>
+          </div>
+          <form method="POST" action="/admin/submissions/contact/<%= m.id %>/status">
+            <select name="status" onchange="this.form.submit()">
+              <option value="new" <%= m.status === 'new' ? 'selected' : '' %>>New</option>
+              <option value="read" <%= m.status === 'read' ? 'selected' : '' %>>Read</option>
+              <option value="resolved" <%= m.status === 'resolved' ? 'selected' : '' %>>Resolved</option>
+            </select>
+          </form>
+        </div>
+        <p style="margin-bottom:0; white-space:pre-wrap;"><%= m.message %></p>
+      </div>
+      <% }) %>
+    </div>
+  </main>
+</div>
+</body>
+</html>

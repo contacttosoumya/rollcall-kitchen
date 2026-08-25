@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="page-about">
+<%- include('partials/header') %>
+
+<% const aboutIntro = content.about_intro || {}; %>
+<% const aboutStory = content.about_story || {}; %>
+
+<main>
+  <section class="page-hero page-hero--about">
+    <div class="wrap">
+      <img class="about-hero__mascot" src="/images/logo-mascot.png" alt="RollCall Kitchen — Authentic Kathi Rolls" data-reveal>
+      <% if (aboutIntro.eyebrow) { %><p class="eyebrow eyebrow--light" data-reveal><%= aboutIntro.eyebrow %></p><% } %>
+      <h1 class="light-heading" data-reveal><%= aboutIntro.heading || 'Our Story' %></h1>
+      <p class="page-hero__sub" data-reveal data-reveal-delay="1"><%= aboutIntro.subtitle || '' %></p>
+    </div>
+  </section>
+
+  <section class="section section--cream about-split">
+    <div class="wrap about-split__grid">
+      <div data-reveal>
+        <% if (aboutStory.eyebrow) { %><p class="eyebrow"><%= aboutStory.eyebrow %></p><% } %>
+        <h2><%= aboutStory.heading || '' %></h2>
+        <% (aboutStory.paragraphs || []).forEach(function(p){ %>
+          <p><%= p %></p>
+        <% }) %>
+      </div>
+      <div class="about-split__art" data-reveal data-reveal-delay="1" aria-hidden="true">
+        <svg viewBox="0 0 400 400" width="100%" height="100%">
+          <circle cx="200" cy="200" r="190" fill="var(--curry-soft)"/>
+          <rect x="90" y="120" width="220" height="26" rx="13" fill="var(--maroon)"/>
+          <rect x="110" y="150" width="180" height="140" rx="14" fill="var(--marigold)"/>
+          <circle cx="200" cy="220" r="42" fill="var(--paper)"/>
+          <path d="M180 220a20 20 0 1 1 40 0" stroke="var(--chili)" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline — a genuine chronological sequence pulled from the database -->
+  <% if (timeline.length) { %>
+  <section class="section timeline-section">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>How We Got Here</p>
+      <h2 data-reveal>From one cart to a Carolina staple.</h2>
+      <ol class="timeline">
+        <% timeline.forEach(function(ev, i){ %>
+        <li data-reveal data-reveal-delay="<%= i % 2 %>">
+          <span class="timeline__num"><%= String(i + 1).padStart(2, '0') %></span>
+          <div><h3><%= ev.title %></h3><p><%= ev.description %></p></div>
+        </li>
+        <% }) %>
+      </ol>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (values.length) { %>
+  <section class="section section--charcoal values-section">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light" data-reveal>What We Won't Compromise On</p>
+      <h2 class="light-heading" data-reveal>Three rules, every single day.</h2>
+      <div class="values-grid">
+        <% values.forEach(function(v, i){ %>
+        <div class="value-card" data-reveal data-reveal-delay="<%= i % 3 %>">
+          <span class="value-card__icon"><%= v.icon %></span>
+          <h3><%= v.title %></h3>
+          <p><%= v.description %></p>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+  <% } %>
+
+  <section class="final-cta">
+    <div class="wrap final-cta__inner" data-reveal>
+      <h2>Taste the difference for yourself.</h2>
+      <div class="hero__cta">
+        <a href="/menu" class="btn btn--primary btn--large">Order Online</a>
+        <a href="/locations" class="btn btn--outline-light btn--large">Find a Location</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js"></script>
+</body>
+</html>

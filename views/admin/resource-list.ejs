@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <%- include('partials/nav') %>
+  <main class="admin-main">
+    <%- include('partials/topbar') %>
+    <div class="admin-content">
+      <div style="display:flex; justify-content:flex-end; margin-bottom:14px;">
+        <a href="/admin/<%= config.key %>/new" class="a-btn a-btn--primary">+ Add <%= config.label.replace(/s$/, '') %></a>
+      </div>
+
+      <div class="a-card" style="padding:0;">
+        <% if (!rows.length) { %>
+          <p class="a-empty">Nothing here yet — click "Add" to create the first one.</p>
+        <% } else { %>
+        <table class="a-table">
+          <thead>
+            <tr>
+              <% config.listColumns.forEach(function(col){ %>
+                <th><%= col.replace(/_/g, ' ') %></th>
+              <% }) %>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% rows.forEach(function(row){ %>
+            <tr>
+              <% config.listColumns.forEach(function(col){ %>
+                <td>
+                  <% const val = row[col]; %>
+                  <% if (typeof val === 'boolean') { %>
+                    <span class="a-badge <%= val ? 'a-badge--success' : 'a-badge--neutral' %>"><%= val ? 'Yes' : 'No' %></span>
+                  <% } else if (val === null || val === undefined || val === '') { %>
+                    <span style="color:var(--a-ink-soft);">—</span>
+                  <% } else { %>
+                    <%= String(val).length > 60 ? String(val).slice(0, 60) + '…' : val %>
+                  <% } %>
+                </td>
+              <% }) %>
+              <td class="a-table__actions">
+                <a href="/admin/<%= config.key %>/<%= row.id %>/edit" class="a-btn a-btn--sm">Edit</a>
+                <form method="POST" action="/admin/<%= config.key %>/<%= row.id %>/delete" onsubmit="return confirm('Delete this? This can\'t be undone.');" style="display:inline;">
+                  <button type="submit" class="a-btn a-btn--sm a-btn--danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

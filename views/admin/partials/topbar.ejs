@@ -1,0 +1,12 @@
+<div class="admin-topbar">
+  <h1><%= title %></h1>
+  <div class="admin-topbar__user">
+    <span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <%= adminUser.name || adminUser.email %>
+    </span>
+    <form method="POST" action="/admin/logout" style="display:inline;">
+      <button type="submit" class="a-btn a-btn--sm">Sign Out</button>
+    </form>
+  </div>
+</div>
