@@ -24,10 +24,20 @@ const { Pool } = require("pg");
 const env = require("./env");
 const logger = require("./logger");
 
+// When DATABASE_URL already specifies sslmode in the connection string
+// itself (e.g. Neon, Railway, most managed Postgres providers), we must
+// NOT also pass an explicit `ssl` option — pg gives the explicit option
+// priority over whatever the connection string says, so an unset PGSSL
+// (which defaults to false) would silently force a plaintext connection
+// even though the URL says `sslmode=require`, producing a confusing
+// connection timeout instead of a clear SSL error. Only override SSL
+// behavior when PGSSL is explicitly set.
+const pgsslExplicitlySet = process.env.PGSSL !== undefined;
+
 const poolConfig = env.DATABASE_URL
   ? {
       connectionString: env.DATABASE_URL,
-      ssl: env.PGSSL ? { rejectUnauthorized: false } : false,
+      ...(pgsslExplicitlySet ? { ssl: env.PGSSL ? { rejectUnauthorized: false } : false } : {}),
     }
   : {
       host: env.PGHOST,
