@@ -224,10 +224,16 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   position: sticky;
   top: 0;
   z-index: 60;
-  background: rgba(255, 246, 233, 0.92);
-  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
   transition: box-shadow .2s ease, padding .2s ease;
+}
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255, 246, 233, 0.92);
+  backdrop-filter: blur(10px);
 }
 .site-header.is-scrolled { box-shadow: 0 8px 24px -16px rgba(36,20,7,.4); }
 .site-header__inner {
