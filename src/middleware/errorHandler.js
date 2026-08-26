@@ -52,17 +52,34 @@ function errorHandler(err, req, res, next) {
   }
 
   res.status(statusCode);
-  try {
-    return res.render("error", {
+  // res.render() is asynchronous — it doesn't throw synchronously into this
+  // try block on a template error, it reports failure via callback. A plain
+  // try/catch here would never actually catch a broken/erroring view, so we
+  // use the explicit callback form instead: if rendering "error" itself
+  // fails for any reason, fall back to a minimal inline HTML page rather
+  // than letting Express surface a raw stack trace to the visitor.
+  res.render(
+    "error",
+    {
       title: statusCode === 404 ? "Page not found" : "Something went wrong",
       statusCode,
       message: publicMessage,
-    });
-  } catch {
-    // If even the error view fails to render, fall back to plain text
-    // rather than letting Express crash trying to render a broken template.
-    return res.type("text/plain").send(publicMessage);
-  }
+    },
+    (renderErr, html) => {
+      if (renderErr) {
+        logger.error("Error page itself failed to render", { error: renderErr.message });
+        return res
+          .type("html")
+          .send(
+            `<!DOCTYPE html><html><head><title>${statusCode === 404 ? "Page not found" : "Something went wrong"}</title></head>` +
+              `<body style="font-family:sans-serif;text-align:center;padding:80px 20px;">` +
+              `<h1>${statusCode === 404 ? "Page not found" : "Something went wrong"}</h1>` +
+              `<p>${publicMessage}</p><p><a href="/">Back home</a></p></body></html>`
+          );
+      }
+      res.send(html);
+    }
+  );
 }
 
 module.exports = { AppError, notFoundHandler, errorHandler };

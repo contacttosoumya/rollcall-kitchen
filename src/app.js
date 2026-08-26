@@ -67,7 +67,29 @@ function createApp() {
   // Every customer-facing view gets `site` (brand/contact info) and
   // `currentPath` (for nav highlighting) without every controller having
   // to fetch and pass them.
+  // A safe, hardcoded fallback for res.locals.site — used the moment a
+  // request comes in (so every template can always reference site.* safely,
+  // even before the real lookup below runs) and again if that lookup fails
+  // (e.g. the database is unreachable). Without this, a DB outage doesn't
+  // just break the requested page — it breaks the *error page* too, since
+  // that page also renders the shared header/footer, producing a raw crash
+  // instead of a graceful "something went wrong" message.
+  const FALLBACK_SITE = {
+    name: "RollCall Kitchen",
+    tagline: "",
+    phone: "",
+    email: "",
+    address: "",
+    instagram: "#",
+    facebook: "#",
+    doordash: "#",
+    ubereats: "#",
+    orderUrl: "/menu#build-your-tiffin",
+  };
+
   app.use(async (req, res, next) => {
+    res.locals.site = FALLBACK_SITE;
+    res.locals.currentPath = req.path;
     try {
       const [brand, locations] = await Promise.all([
         contentService.getContentBlock("brand", {}),
@@ -94,9 +116,12 @@ function createApp() {
         ubereats: brand.ubereats || "#",
         orderUrl: "/menu#build-your-tiffin",
       };
-      res.locals.currentPath = req.path;
       next();
     } catch (err) {
+      // res.locals.site already holds FALLBACK_SITE from above (the real
+      // lookup above failed before overwriting it) — so the error page
+      // triggered by next(err) can still render normally instead of
+      // crashing a second time on top of the original failure.
       next(err);
     }
   });
