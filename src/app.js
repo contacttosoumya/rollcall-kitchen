@@ -25,6 +25,14 @@ const pageRoutes = require("./routes/page.routes");
 const apiRoutes = require("./routes/api.routes");
 const adminRoutes = require("./routes/admin.routes");
 
+// Computed once when the process starts, so it changes on every deploy
+// (Railway restarts the process on each deploy) without changing on every
+// individual request. Appended as a query string to CSS/JS links (see
+// partials/head.ejs) so a long browser/CDN cache lifetime on those files
+// (see the static middleware below) can never serve a stale version after
+// a deploy — the URL itself changes, so there's nothing stale to serve.
+const ASSET_VERSION = Date.now();
+
 function createApp() {
   const app = express();
 
@@ -57,6 +65,11 @@ function createApp() {
   );
 
   app.use(generalLimiter);
+
+  app.use((req, res, next) => {
+    res.locals.assetVersion = ASSET_VERSION;
+    next();
+  });
 
   // Admin panel mounted before the customer-facing site-locals middleware
   // below — admin views don't use `site`/customer `currentPath` (they set
