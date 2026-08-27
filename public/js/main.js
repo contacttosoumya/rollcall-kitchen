@@ -13,8 +13,8 @@
   onScroll();
 
   /* ============ Mobile nav ============ */
-  const hamburger = document.getElementById("hamburgerBtn");
-  const mainNav = document.getElementById("mainNav");
+const hamburger = document.getElementById("hamburgerBtn");
+const mainNav = document.getElementById("mobileNavDrawer");
   if (hamburger && mainNav) {
     hamburger.addEventListener("click", () => {
       const isOpen = mainNav.classList.toggle("is-open");

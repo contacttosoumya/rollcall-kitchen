@@ -250,6 +250,11 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 .brand__tag { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
 
 .main-nav { display: flex; align-items: center; gap: 26px; }
+/* Base (desktop-default) state — hidden until the mobile breakpoint below
+   turns it into the fixed drawer. Kept as a plain, unconditional rule
+   (not inside a media query) so it's correctly hidden even before any
+   stylesheet finishes loading on a slow connection. */
+.mobile-nav-drawer { display: none; }
 .main-nav a {
   font-weight: 600;
   font-size: 0.92rem;
@@ -868,11 +873,16 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
    to the mobile hamburger menu earlier, before the row ever runs out of
    space and starts wrapping text mid-phrase. */
 @media (max-width: 1320px) {
-  .main-nav { position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0;
-    background: var(--cream); flex-direction: column; align-items: flex-start; gap: 4px;
-    padding: 20px 24px; transform: translateX(100%); transition: transform .25s ease; overflow-y: auto; }
-  .main-nav.is-open { transform: translateX(0); }
-  .main-nav a { width: 100%; padding: 14px 0; font-size: 1.1rem; border-bottom: 1px solid var(--line); }
+  #mainNavDesktop { display: none; }
+
+  .mobile-nav-drawer {
+    display: flex; position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0;
+    z-index: 70; background: var(--cream); flex-direction: column; align-items: flex-start; gap: 4px;
+    padding: 20px 24px; transform: translateX(100%); transition: transform .25s ease; overflow-y: auto;
+  }
+  .mobile-nav-drawer.is-open { transform: translateX(0); }
+  .mobile-nav-drawer a { width: 100%; padding: 14px 0; font-size: 1.1rem; border-bottom: 1px solid var(--line); color: var(--ink); font-weight: 600; }
+  .mobile-nav-drawer a.is-active { color: var(--chili); }
   .header-call span, .nav-cart span:not(.cart-count) { display: none; }
   .hamburger { display: flex; }
 }
