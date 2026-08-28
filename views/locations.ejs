@@ -21,25 +21,13 @@
     <div class="wrap locations-list">
       <% locations.forEach(function(loc, i){ %>
         <article class="location-detail" id="<%= loc.slug %>" data-reveal data-reveal-delay="<%= i % 2 %>">
-          <div class="location-detail__map" aria-hidden="true">
-            <svg viewBox="0 0 400 320" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
-              <rect width="400" height="320" fill="var(--paper-dim)"/>
-              <path d="M-10 60 L420 40" stroke="var(--line)" stroke-width="10" fill="none"/>
-              <path d="M-10 180 L420 195" stroke="var(--line)" stroke-width="14" fill="none"/>
-              <path d="M-10 280 L420 265" stroke="var(--line)" stroke-width="8" fill="none"/>
-              <path d="M60 -10 L90 330" stroke="var(--line)" stroke-width="9" fill="none"/>
-              <path d="M300 -10 L280 330" stroke="var(--line)" stroke-width="9" fill="none"/>
-              <rect x="110" y="80" width="46" height="34" rx="4" fill="var(--paper)" opacity=".8"/>
-              <rect x="190" y="220" width="52" height="38" rx="4" fill="var(--paper)" opacity=".8"/>
-              <rect x="30" y="200" width="40" height="30" rx="4" fill="var(--paper)" opacity=".8"/>
-              <g transform="translate(200,150)">
-                <ellipse cx="0" cy="58" rx="22" ry="6" fill="#000" opacity=".12"/>
-                <path d="M0 -46C-24 -46 -40 -28 -40 -6c0 30 40 64 40 64s40-34 40-64c0-22-16-40-40-40Z" fill="var(--chili)"/>
-                <circle cx="0" cy="-6" r="16" fill="var(--paper)"/>
-                <text x="0" y="5" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="15" fill="var(--chili)">RC</text>
-              </g>
-            </svg>
-          </div>
+ <div class="location-detail__map" aria-hidden="true">
+  <% if (loc.mapUrl) { %>
+    <img src="<%= loc.mapUrl %>" alt="" loading="lazy">
+  <% } else { %>
+  <%- include('partials/grand-opening-graphic') %>
+  <% } %>
+</div>
           <div class="location-detail__body">
             <h2><%= loc.name %></h2>
             <p class="location-detail__address">📍 <%= loc.address %></p>
