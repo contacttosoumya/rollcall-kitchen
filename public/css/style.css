@@ -710,6 +710,13 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 
 /* ============ Values ============ */
 .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 24px; }
+
+/* ============ Founders ============ */
+.founders-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 10px; }
+.founder-card { text-align: center; }
+.founder-card__photo { width: 148px; height: 148px; margin: 0 auto 18px; border-radius: 50%; box-shadow: var(--shadow-soft); }
+.founder-card h3 { font-size: 1.05rem; margin-bottom: 2px; }
+.founder-card__role { font-family: var(--font-mono); font-size: .78rem; color: var(--chili-deep); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin: 0; }
 .value-card { background: var(--charcoal-2); border: 1px solid var(--line-dark); border-radius: var(--radius-m); padding: 28px; }
 .value-card__icon { font-size: 2rem; display: block; margin-bottom: 14px; }
 .value-card h3 { color: var(--paper); font-size: 1.1rem; }
@@ -864,7 +871,7 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   .about-split__art { order: -1; max-width: 260px; }
   .menu-layout { grid-template-columns: 1fr; }
   .tiffin-sidebar { position: static; order: -1; }
-  .dish-grid, .location-cards, .values-grid, .steps-grid, .tier-grid, .package-grid, .redeem-grid { grid-template-columns: repeat(2, 1fr); }
+  .dish-grid, .location-cards, .values-grid, .steps-grid, .tier-grid, .package-grid, .redeem-grid, .founders-grid { grid-template-columns: repeat(2, 1fr); }
   .gallery-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
@@ -913,7 +920,7 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   .trust-bar__grid { grid-template-columns: repeat(2, 1fr); gap: 24px 0; }
   .trust-stat:nth-child(2n) { border-right: none; }
   .trust-stat { border-bottom: 1px solid var(--line); padding-bottom: 16px; }
-  .dish-grid, .menu-items, .location-cards, .values-grid, .steps-grid, .tier-grid, .package-grid, .gallery-grid, .redeem-grid { grid-template-columns: 1fr; }
+  .dish-grid, .menu-items, .location-cards, .values-grid, .steps-grid, .tier-grid, .package-grid, .gallery-grid, .redeem-grid, .founders-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
   .section { padding: 36px 0; }
   .page-hero { padding: 32px 0 26px; }
