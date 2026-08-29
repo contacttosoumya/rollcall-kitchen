@@ -626,7 +626,8 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 .page-hero { background: linear-gradient(180deg, var(--charcoal), var(--charcoal-2)); padding: 44px 0 36px; text-align: center; }
 .page-hero h1 { font-size: clamp(2.1rem, 4.4vw, 3.4rem); margin-bottom: 16px; }
 .page-hero__sub { max-width: 620px; margin: 0 auto; color: #E7D9C3; }
-.about-hero__mascot { max-width: 220px; margin: 0 auto 20px; filter: drop-shadow(0 16px 24px rgba(0,0,0,.4)); }
+.page-hero--about { padding: 26px 0 22px; }
+.about-hero__mascot { max-width: 130px; margin: 0 auto 10px; filter: drop-shadow(0 16px 24px rgba(0,0,0,.4)); }
 
 /* ============ Menu page ============ */
 .menu-layout { display: grid; grid-template-columns: 1fr 320px; gap: 40px; align-items: start; }
@@ -712,7 +713,8 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 24px; }
 
 /* ============ Founders ============ */
-.founders-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 10px; }
+.founders-section { padding-top: 24px; }
+.founders-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 6px; }
 .founder-card { text-align: center; }
 .founder-card__photo { width: 148px; height: 148px; margin: 0 auto 18px; border-radius: 50%; box-shadow: var(--shadow-soft); }
 .founder-card h3 { font-size: 1.05rem; margin-bottom: 2px; }
