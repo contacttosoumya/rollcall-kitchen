@@ -26,6 +26,11 @@
           <div class="a-field"><label>Instagram URL</label><input type="text" name="instagram" value="<%= brand.instagram || '' %>"></div>
           <div class="a-field"><label>Facebook URL</label><input type="text" name="facebook" value="<%= brand.facebook || '' %>"></div>
         </div>
+        <div class="a-field">
+          <label>WhatsApp Group Invite Link</label>
+          <input type="text" name="whatsapp" value="<%= brand.whatsapp || '' %>" placeholder="https://chat.whatsapp.com/XXXXXXXXXXXXXXXXXXXXXX">
+          <p class="a-field__help">From WhatsApp: open the group → Group info → Invite via link → Copy Link. Paste it here. Leave blank to hide the WhatsApp button site-wide.</p>
+        </div>
         <div class="a-field-row">
           <div class="a-field"><label>DoorDash URL</label><input type="text" name="doordash" value="<%= brand.doordash || '' %>"></div>
           <div class="a-field"><label>Uber Eats URL</label><input type="text" name="ubereats" value="<%= brand.ubereats || '' %>"></div>

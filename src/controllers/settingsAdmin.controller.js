@@ -27,13 +27,13 @@ async function editBrandForm(req, res) {
 }
 
 async function updateBrand(req, res) {
-  const { name, tagline, email, instagram, facebook, doordash, ubereats } = req.body;
+  const { name, tagline, email, instagram, facebook, whatsapp, doordash, ubereats } = req.body;
   // phone/address are intentionally NOT edited here — see the note in the
   // brand settings view. They live on the location record (Business →
   // Locations) since that's the single source of truth the header,
   // footer, and every page pull from.
   const existing = await contentService.getContentBlock("brand", {});
-  const value = { ...existing, name, tagline, email, instagram, facebook, doordash, ubereats };
+  const value = { ...existing, name, tagline, email, instagram, facebook, whatsapp, doordash, ubereats };
   await db.query(
     `INSERT INTO rollcallkitchen.content_blocks (key, value) VALUES ('brand', $1)
      ON CONFLICT (key) DO UPDATE SET value = $1`,

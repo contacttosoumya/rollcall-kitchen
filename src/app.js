@@ -71,22 +71,14 @@ function createApp() {
     next();
   });
 
-  // Admin panel mounted before the customer-facing site-locals middleware
-  // below — admin views don't use `site`/customer `currentPath` (they set
-  // their own locals in admin.routes.js), so there's no reason to spend a
-  // content_blocks lookup on every admin request.
-  app.use("/admin", adminRoutes);
-
-  // Every customer-facing view gets `site` (brand/contact info) and
-  // `currentPath` (for nav highlighting) without every controller having
-  // to fetch and pass them.
-  // A safe, hardcoded fallback for res.locals.site — used the moment a
-  // request comes in (so every template can always reference site.* safely,
-  // even before the real lookup below runs) and again if that lookup fails
-  // (e.g. the database is unreachable). Without this, a DB outage doesn't
-  // just break the requested page — it breaks the *error page* too, since
-  // that page also renders the shared header/footer, producing a raw crash
-  // instead of a graceful "something went wrong" message.
+  // A safe, hardcoded fallback for res.locals.site, set for every single
+  // request — including /admin/* ones — before any route can fail. The
+  // shared error.ejs/404.ejs templates render the customer-facing
+  // header/footer (which reference site.*) regardless of which route
+  // family triggered them, but the full DB-backed site lookup below is
+  // deliberately skipped for /admin/* routes for performance. Without
+  // this early fallback, an admin-panel error had nothing to fall back
+  // to and crashed a second time trying to render the error page itself.
   const FALLBACK_SITE = {
     name: "RollCall Kitchen",
     tagline: "",
@@ -95,13 +87,29 @@ function createApp() {
     address: "",
     instagram: "#",
     facebook: "#",
+    whatsapp: "#",
     doordash: "#",
     ubereats: "#",
     orderUrl: "/menu#build-your-tiffin",
   };
-
-  app.use(async (req, res, next) => {
+  app.use((req, res, next) => {
     res.locals.site = FALLBACK_SITE;
+    next();
+  });
+
+  // Admin panel mounted before the customer-facing site-locals middleware
+  // below — admin views don't use `site`/customer `currentPath` (they set
+  // their own locals in admin.routes.js), so there's no reason to spend a
+  // content_blocks lookup on every admin request.
+  app.use("/admin", adminRoutes);
+
+  // Every customer-facing view gets `site` (brand/contact info) and
+  // `currentPath` (for nav highlighting) without every controller having
+  // to fetch and pass them. res.locals.site already holds the safe
+  // fallback set earlier for every route — this middleware just tries to
+  // upgrade it to real data for customer-facing pages specifically; if
+  // that lookup fails, the earlier fallback is simply left in place.
+  app.use(async (req, res, next) => {
     res.locals.currentPath = req.path;
     try {
       const [brand, locations] = await Promise.all([
@@ -125,14 +133,15 @@ function createApp() {
         address: (primaryLocation && primaryLocation.address) || brand.address || "",
         instagram: brand.instagram || "#",
         facebook: brand.facebook || "#",
+        whatsapp: brand.whatsapp || "#",
         doordash: brand.doordash || "#",
         ubereats: brand.ubereats || "#",
         orderUrl: "/menu#build-your-tiffin",
       };
       next();
     } catch (err) {
-      // res.locals.site already holds FALLBACK_SITE from above (the real
-      // lookup above failed before overwriting it) — so the error page
+      // res.locals.site already holds the early fallback (set above,
+      // before this route was even matched) — so the error page
       // triggered by next(err) can still render normally instead of
       // crashing a second time on top of the original failure.
       next(err);
