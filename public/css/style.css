@@ -596,8 +596,19 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-card);
   opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity .2s ease, transform .2s ease;
 }
-.back-to-top.is-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
+/* WhatsApp keeps its own recognizable brand green rather than the site
+   palette — this is a well-known third-party icon, and recoloring it
+   would make it harder to instantly recognize as "tap to open WhatsApp".
+   Always visible (unlike back-to-top, which only appears after scrolling)
+   since visitors should be able to find it the moment they land. */
+.whatsapp-float {
+  position: fixed; bottom: 26px; left: 26px; width: 56px; height: 56px; border-radius: 50%;
+  background: #25D366; color: #fff; z-index: 55;
+  display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-card);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.whatsapp-float:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 16px 32px -10px rgba(0,0,0,.4); }
 /* ============ Tiffin drawer ============ */
 .tiffin-drawer {
   position: fixed; top: 0; right: 0; height: 100%; width: min(380px, 92vw);
@@ -719,6 +730,7 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 .founder-card__photo { width: 148px; height: 148px; margin: 0 auto 18px; border-radius: 50%; box-shadow: var(--shadow-soft); }
 .founder-card h3 { font-size: 1.05rem; margin-bottom: 2px; }
 .founder-card__role { font-family: var(--font-mono); font-size: .78rem; color: var(--chili-deep); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin: 0; }
+/* ============ Founders ============ */
 .value-card { background: var(--charcoal-2); border: 1px solid var(--line-dark); border-radius: var(--radius-m); padding: 28px; }
 .value-card__icon { font-size: 2rem; display: block; margin-bottom: 14px; }
 .value-card h3 { color: var(--paper); font-size: 1.1rem; }
