@@ -14,15 +14,15 @@
   --ink-soft: #4A3826;
   --charcoal: #1B120B;
   --charcoal-2: #241811;
-  --marigold: #FFA400;
-  --marigold-deep: #E68A00;
-  --marigold-soft: #FFE3AD;
-  --chili: #E4432B;
-  --chili-deep: #C6301C;
-  --curry: #4B7A3D;
-  --curry-deep: #375C2C;
+  --marigold: #3C9950;
+  --marigold-deep: #256B32;
+  --marigold-soft: #DCEFD9;
+  --chili: #D4141A;
+  --chili-deep: #A20E12;
+  --curry: #2D7A3D;
+  --curry-deep: #1D6027;
   --curry-soft: #DCEBD2;
-  --maroon: #7A1F2B;
+  --maroon: #8A0F13;
   --line: #E7D3AE;
   --line-dark: #3A2C1E;
 
@@ -766,10 +766,10 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 .tier-card--bronze { background: linear-gradient(160deg, var(--curry-deep), var(--curry)); border-color: transparent; }
 /* Gold is bright enough that light text washes out — dark text reads much
    better here, same reasoning as the coming-soon banner treatment. */
-.tier-card--gold { background: linear-gradient(160deg, var(--marigold-deep), var(--marigold)); border-color: transparent; }
-.tier-card--gold .tier-card__badge { color: var(--ink); }
-.tier-card--gold .tier-card__req { color: var(--maroon); }
-.tier-card--gold li { color: var(--ink); border-top-color: rgba(0,0,0,.12); }
+.tier-card--gold { background: linear-gradient(160deg, var(--charcoal-2), var(--maroon)); border-color: transparent; }
+.tier-card--gold .tier-card__badge { color: var(--paper); }
+.tier-card--gold .tier-card__req { color: var(--marigold); }
+.tier-card--gold li { color: #EAD9BE; border-top-color: rgba(255,255,255,.1); }
 .tier-card__badge { font-family: var(--font-display); font-size: 1.1rem; color: var(--paper); display: block; margin-bottom: 6px; }
 .tier-card__req { font-family: var(--font-mono); color: var(--marigold); font-size: .8rem; margin-bottom: 16px; }
 .tier-card ul { list-style: none; padding: 0; margin: 0; }
