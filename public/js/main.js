@@ -336,4 +336,69 @@ const mainNav = document.getElementById("mobileNavDrawer");
 
   // expose for menu.js
   window.RollCallCart = { getCart, changeItemQty, clearCart, cartTotals };
+
+  /* ============================================================
+     ORDER VIA WHATSAPP
+     WhatsApp group links can't pre-fill a message the way a direct
+     phone-number link can — there's no "open this group with my order
+     already typed in" option. This is the closest real equivalent: build
+     the order text, copy it to the clipboard, open the group, and tell
+     the customer to paste it in.
+     ============================================================ */
+  function buildWhatsAppOrderText() {
+    const cart = getCart();
+    const entries = Object.entries(cart);
+    if (entries.length === 0) return null;
+
+    const { total } = cartTotals(cart);
+    const lines = entries.map(([, item]) => `${item.qty}x ${item.name} - ${money(item.qty * item.price)}`);
+
+    return [
+      "🛒 New Order — RollCall Kitchen",
+      "",
+      ...lines,
+      "",
+      `Total: ${money(total)}`,
+      "",
+      "Name: ",
+      "Phone: ",
+      "Pickup or Delivery: ",
+    ].join("\n");
+  }
+
+  async function handleWhatsAppOrderClick(btn) {
+    const orderText = buildWhatsAppOrderText();
+    const link = btn.dataset.whatsappLink;
+    const originalHTML = btn.innerHTML;
+
+    if (!orderText) {
+      alert("Your order is empty — add a few dishes from the menu first, then try again.");
+      return;
+    }
+
+    let copied = false;
+    try {
+      await navigator.clipboard.writeText(orderText);
+      copied = true;
+    } catch (err) {
+      // Clipboard access can fail (older browser, permissions, non-HTTPS
+      // in dev) — the WhatsApp group still opens either way, the customer
+      // just has to type the order instead of pasting it.
+      copied = false;
+    }
+
+    window.open(link, "_blank", "noopener");
+
+    btn.disabled = true;
+    btn.innerHTML = `<span>${copied ? "Copied! Paste it in WhatsApp \u2192" : "Opening WhatsApp\u2026"}</span>`;
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
+    }, 3000);
+  }
+
+  ["whatsappOrderBtn", "whatsappOrderBtnSidebar"].forEach((id) => {
+    const btn = document.getElementById(id);
+    if (btn) btn.addEventListener("click", () => handleWhatsAppOrderClick(btn));
+  });
 })();
